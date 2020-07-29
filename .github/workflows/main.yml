@@ -32,7 +32,7 @@ jobs:
     - name: Unit Test
       run: python -m xmlrunner discover -s . -o ./test-reports
     - name: Unit Test Result
-      uses: .github/actions/publish-test-result-action
+      uses: ./.github/actions/publish-test-result-action
       id: test-result-junit
       with:
         result-type: 'test'
@@ -44,7 +44,7 @@ jobs:
         coverage run --source=. -m unittest discover -s .
         coverage xml -o coverage/coverage.xml
     - name: Code Coverage Result
-      uses: .github/actions/publish-test-result-action
+      uses: ./.github/actions/publish-test-result-action
       id: coverage-result-cobertura
       with:
         result-type: 'coverage'
