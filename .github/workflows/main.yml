@@ -31,6 +31,8 @@ jobs:
       run: pip install coverage unittest-xml-reporting
     - name: Unit Test
       run: |
+        set +x
+        set +e
         export PYTHONPATH=src
         python -m xmlrunner discover -s . -o ./test-reports
     - name: Unit Test Result
@@ -43,6 +45,8 @@ jobs:
         report-file-filter: '.*.xml'
     - name: Code Coverage
       run: |
+        set +x
+        set +e
         export PYTHONPATH=src
         coverage run --source=. -m unittest discover -s .
         coverage xml -o coverage/coverage.xml
