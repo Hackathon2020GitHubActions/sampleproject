@@ -1,0 +1,59 @@
+# this file is *not* meant to cover or endorse the use of GitHub Actions, but rather to
+# help make automated releases for this project
+
+name: Test Result and Code Coverage - Failed
+
+on:
+  push:
+    branches:
+      - test_case_failed
+
+jobs:
+  unit-test-code-coverage:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python
+      uses: actions/setup-python@v1
+      with:
+        python-version: '3.x'
+    - name: Checkout
+      uses: actions/checkout@v2
+    # checkout the private repo containing the action to run
+    - name: Checkout GitHub Action Repo
+      uses: actions/checkout@v2
+      with:
+        repository: Hackathon2020GitHubActions/publish-test-result-action
+        ref: master
+        token: ${{ secrets.GIT_HUB_TOKEN }} # stored in GitHub secrets
+        path: .github/actions/publish-test-result-action
+    - name: Install dependencies
+      run: pip install coverage unittest-xml-reporting
+    - name: Unit Test
+      run: python -m xmlrunner discover -s . -o ./test-reports
+    - name: Unit Test Result
+      uses: .github/actions/publish-test-result-action
+      id: test-result-junit
+      with:
+        result-type: 'test'
+        result-format: 'junit'
+        report-path: 'test-reports'
+        report-file-filter: '.*.xml'
+    - name: Code Coverage
+      run: |
+        coverage run --source=. -m unittest discover -s .
+        coverage xml -o coverage/coverage.xml
+    - name: Code Coverage Result
+      uses: .github/actions/publish-test-result-action
+      id: coverage-result-cobertura
+      with:
+        result-type: 'coverage'
+        result-format: 'cobertura'
+        report-path: 'coverage'
+        report-file-filter: '.*.xml'
+    - name: Get the output test result failures
+      run: echo "Failed Test Case = ${{ steps.test-result-junit.outputs.failed-tests }}"
+    - name: Get the output test result issue body
+      run: echo "Failed Test Case = ${{ steps.test-result-junit.outputs.issue-body }}"
+    - name: Get the output code coverage
+      run: echo "Code Coverage = ${{ steps.coverage-result-cobertura.outputs.code-coverage }}"
