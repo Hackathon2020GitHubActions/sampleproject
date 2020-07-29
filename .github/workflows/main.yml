@@ -61,8 +61,6 @@ jobs:
         report-file-filter: '.*.xml'
     - name: Get the output test result failures
       run: echo "Failed Test Case = ${{ steps.test-result-junit.outputs.failed-tests }}"
-    - name: Get the output test result issue body
-      run: echo "Failed Test Case = ${{ steps.test-result-junit.outputs.issue-body }}"
     - name: Get the output code coverage
       run: echo "Code Coverage = ${{ steps.coverage-result-cobertura.outputs.code-coverage }}"
     - name: Create Issue in Case of Test Case failures
