@@ -63,9 +63,9 @@ jobs:
       run: |
         echo "Code Coverage = ${{ steps.coverage-result-cobertura.outputs.code-coverage }}"
         CODE_COVERAGE=${{ steps.coverage-result-cobertura.outputs.code-coverage }}
-        if [ $CODE_COVERAGE -lt 80 ]
+        if [ $CODE_COVERAGE -lt 60 ]
           then
-            echo "Code Coverage is below threshold - 80"
+            echo "Code Coverage is below threshold - 60"
             exit 1
         fi
     - name: Create Issue in Case of Test Case failures
