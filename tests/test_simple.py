@@ -18,9 +18,5 @@ class TestSimple(unittest.TestCase):
     def test_add_three(self):
         self.assertEqual(add_one(7), 8)
 
-    def test_add_failed(self):
-        self.assertEqual(add_one(8), 8)
-
-
 if __name__ == '__main__':
     unittest.main()

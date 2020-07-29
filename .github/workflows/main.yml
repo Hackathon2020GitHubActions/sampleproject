@@ -1,12 +1,12 @@
 # this file is *not* meant to cover or endorse the use of GitHub Actions, but rather to
 # help make automated releases for this project
 
-name: Test Result and Code Coverage - Failed
+name: Test Result and Code Coverage - Code Coverage Fail
 
 on:
   push:
     branches:
-      - test_case_failed
+      - code_coverage_check
 
 jobs:
   unit-test-code-coverage:
@@ -63,9 +63,9 @@ jobs:
       run: |
         echo "Code Coverage = ${{ steps.coverage-result-cobertura.outputs.code-coverage }}"
         CODE_COVERAGE=${{ steps.coverage-result-cobertura.outputs.code-coverage }}
-        if [ $CODE_COVERAGE -lt 60 ]
+        if [ $CODE_COVERAGE -lt 90 ]
           then
-            echo "Code Coverage is below threshold - 60"
+            echo "Code Coverage is below threshold - 90"
             exit 1
         fi
     - name: Create Issue in Case of Test Case failures
