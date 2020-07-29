@@ -59,10 +59,15 @@ jobs:
         result-format: 'cobertura'
         report-path: 'coverage'
         report-file-filter: '.*.xml'
-    - name: Get the output test result failures
-      run: echo "Failed Test Case = ${{ steps.test-result-junit.outputs.failed-tests }}"
-    - name: Get the output code coverage
-      run: echo "Code Coverage = ${{ steps.coverage-result-cobertura.outputs.code-coverage }}"
+    - name: Check Code Coverage
+      run: |
+        echo "Code Coverage = ${{ steps.coverage-result-cobertura.outputs.code-coverage }}"
+        CODE_COVERAGE=${{ steps.coverage-result-cobertura.outputs.code-coverage }}
+        if [ $CODE_COVERAGE -lt 80 ]
+          then
+            echo "Code Coverage is below threshold - 80"
+            exit 1
+        fi
     - name: Create Issue in Case of Test Case failures
       if: steps.test-result-junit.outputs.failed-tests != '0'
       uses: maxkomarychev/oction-create-issue@v0.7.1
