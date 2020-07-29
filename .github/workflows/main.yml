@@ -1,12 +1,12 @@
 # this file is *not* meant to cover or endorse the use of GitHub Actions, but rather to
 # help make automated releases for this project
 
-name: Test Result and Code Coverage - Code Coverage Fail
+name: Test Result and Code Coverage - Unit Test Fail
 
 on:
   push:
     branches:
-      - code_coverage_check
+      - test_case_failed
 
 jobs:
   unit-test-code-coverage:
