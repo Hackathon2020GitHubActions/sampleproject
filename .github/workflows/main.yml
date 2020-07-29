@@ -35,6 +35,7 @@ jobs:
         set +e
         export PYTHONPATH=src
         python -m xmlrunner discover -s . -o ./test-reports
+        echo "Executed Unit Tests"
     - name: Unit Test Result
       uses: ./.github/actions/publish-test-result-action
       id: test-result-junit
