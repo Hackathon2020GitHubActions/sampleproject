@@ -64,6 +64,7 @@ jobs:
     - name: Get the output code coverage
       run: echo "Code Coverage = ${{ steps.coverage-result-cobertura.outputs.code-coverage }}"
     - name: Create Issue in Case of Test Case failures
+      if: steps.test-result-junit.outputs.failed-tests != "0"
       uses: maxkomarychev/oction-create-issue@v0.7.1
       id: create-issue
       with:
