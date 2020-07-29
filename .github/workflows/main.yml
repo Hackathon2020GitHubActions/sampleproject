@@ -6,7 +6,7 @@ name: Test Result and Code Coverage
 on:
   push:
     branches:
-      - test_case_failed
+      - master
 
 jobs:
   unit-test-code-coverage:
