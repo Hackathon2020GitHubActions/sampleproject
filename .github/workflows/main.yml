@@ -1,0 +1,84 @@
+# this file is *not* meant to cover or endorse the use of GitHub Actions, but rather to
+# help make automated releases for this project
+
+name: Test Result and Code Coverage
+
+on:
+  push:
+    branches:
+      - test_case_failed
+
+jobs:
+  unit-test-code-coverage:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python
+      uses: actions/setup-python@v1
+      with:
+        python-version: '3.x'
+    - name: Checkout
+      uses: actions/checkout@v2
+    # checkout the private repo containing the action to run
+    - name: Checkout GitHub Action Repo
+      uses: actions/checkout@v2
+      with:
+        repository: Hackathon2020GitHubActions/publish-test-result-action
+        ref: master
+        token: ${{ secrets.GIT_HUB_TOKEN }} # stored in GitHub secrets
+        path: .github/actions/publish-test-result-action
+    - name: Install dependencies
+      run: pip install coverage unittest-xml-reporting
+    - name: Unit Test
+      run: |
+        set +x
+        set +e
+        export PYTHONPATH=src
+        python -m xmlrunner discover -s . -o ./test-reports
+        echo "Executed Unit Tests"
+    - name: Unit Test Result
+      uses: ./.github/actions/publish-test-result-action
+      id: test-result-junit
+      with:
+        result-type: 'test'
+        result-format: 'junit'
+        report-path: 'test-reports'
+        report-file-filter: '.*.xml'
+    - name: Code Coverage
+      run: |
+        set +x
+        set +e
+        export PYTHONPATH=src
+        coverage run --source=. -m unittest discover -s .
+        coverage xml -o coverage/coverage.xml
+    - name: Code Coverage Result
+      uses: ./.github/actions/publish-test-result-action
+      id: coverage-result-cobertura
+      with:
+        result-type: 'coverage'
+        result-format: 'cobertura'
+        report-path: 'coverage'
+        report-file-filter: '.*.xml'
+    - name: Create Issue in Case of Test Case failures
+      if: steps.test-result-junit.outputs.failed-tests != '0'
+      uses: maxkomarychev/oction-create-issue@v0.7.1
+      id: create-issue
+      with:
+        token: ${{ secrets.GIT_HUB_TOKEN }}
+        title: "Automatic Issue: Unit Test Failures"
+        body:  ${{ steps.test-result-junit.outputs.issue-body }}
+        labels: "bug"
+    - name: Check Code Coverage and fail if below threshold
+      run: |
+        echo "Code Coverage = ${{ steps.coverage-result-cobertura.outputs.code-coverage }}"
+        CODE_COVERAGE=${{ steps.coverage-result-cobertura.outputs.code-coverage }}
+        if [ $CODE_COVERAGE -lt 60 ]
+          then
+            echo "Code Coverage is below threshold - 60"
+            exit 1
+        fi
+    - name: Check Unit Test and fail if failures
+      if: steps.test-result-junit.outputs.failed-tests != '0'
+      run: |
+        echo "Failed Test Cases = ${{steps.test-result-junit.outputs.failed-tests}}"
+        exit 1
