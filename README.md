@@ -1,8 +1,8 @@
 # A sample Python project
 
-![Test Result and Code Coverage](https://github.com/Hackathon2020GitHubActions/sampleproject/workflows/Test%20Result%20and%20Code%20Coverage/badge.svg?branch=master&event=push)
-![Test Result and Code Coverage - Unit Test Fail](https://github.com/Hackathon2020GitHubActions/sampleproject/workflows/Test%20Result%20and%20Code%20Coverage%20-%20Unit%20Test%20Fail/badge.svg?branch=test_case_failed&event=push)
-![Test Result and Code Coverage - Code Coverage Fail](https://github.com/Hackathon2020GitHubActions/sampleproject/workflows/Test%20Result%20and%20Code%20Coverage%20-%20Code%20Coverage%20Fail/badge.svg?branch=code_coverage_check&event=push)
+![Test Result and Code Coverage](https://github.com/Hackathon2020GitHubActions/sampleproject/workflows/Test%20Result%20and%20Code%20Coverage/badge.svg?branch=master&event=push)</br>
+![Test Result and Code Coverage - Unit Test Fail](https://github.com/Hackathon2020GitHubActions/sampleproject/workflows/Test%20Result%20and%20Code%20Coverage%20-%20Unit%20Test%20Fail/badge.svg?branch=test_case_failed&event=push)</br>
+![Test Result and Code Coverage - Code Coverage Fail](https://github.com/Hackathon2020GitHubActions/sampleproject/workflows/Test%20Result%20and%20Code%20Coverage%20-%20Code%20Coverage%20Fail/badge.svg?branch=code_coverage_check&event=push)</br>
 
 ![Python Logo](https://www.python.org/static/community_logos/python-logo.png "Sample inline image")
 
